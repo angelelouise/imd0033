@@ -70,7 +70,21 @@ public class LoginActivity extends AppCompatActivity {
         mSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                tentativaLogin();
+                usuario_principal = new Usuario(true,
+                        "sss",
+                        1111,
+                        "email@email.com",
+                        1,
+                        1100,
+                        1,
+                        "angele",
+                        "angele",
+                        "Angele Louise",
+                        "ddd");
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                intent.putExtra("user", usuario_principal);
+                startActivity(intent);
+                //tentativaLogin();
             }
         });
 
@@ -181,6 +195,8 @@ public class LoginActivity extends AppCompatActivity {
 
         String mLogin = login;
         final String mPassword = password;
+
+        //só pra conectar
 
         Retrofit retrofit = ConnectRetrofit(sBaseUrl);
 

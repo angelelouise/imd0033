@@ -1,6 +1,8 @@
 package com.example.angele.imd0033.Dominio;
 
-public class Usuario {
+import java.io.Serializable;
+
+public class Usuario implements Serializable {
     private boolean ativo;
     private String chave_foto;
     private int cpf_cnpj;
