@@ -1,16 +1,29 @@
 package com.example.angele.imd0033.Dominio;
 
-import java.io.Serializable;
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
 
+import java.io.Serializable;
+@Entity(tableName = "usuario")
 public class Usuario implements Serializable {
+
     private boolean ativo;
     private String chave_foto;
     private int cpf_cnpj;
     private String email;
     private int id_foto;
     private int id_unidade;
+
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id_usuario")
     private int id_usuario;
+
+    @NonNull
     private String login;
+
+    @NonNull
     private String senha;
     private String nome_pessoa;
     private String url_foto;
