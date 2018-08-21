@@ -4,7 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.example.angele.imd0033.Dominio.Postagem;
+import com.example.angele.imd0033.dominio.Postagem;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;

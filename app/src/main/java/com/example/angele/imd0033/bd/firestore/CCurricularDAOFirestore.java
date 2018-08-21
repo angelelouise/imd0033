@@ -3,7 +3,7 @@ package com.example.angele.imd0033.bd.firestore;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.example.angele.imd0033.Dominio.ComponenteCurricular;
+import com.example.angele.imd0033.dominio.ComponenteCurricular;
 import com.example.angele.imd0033.bd.CCurricularDAO;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -24,7 +24,7 @@ import static android.support.constraint.Constraints.TAG;
 public class CCurricularDAOFirestore implements CCurricularDAO{
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    public void inserirCC(ComponenteCurricular componenteCurricular){
+    public void inserir(ComponenteCurricular componenteCurricular){
         // Create a new user with a first and last name
         Map<String, Object> ccurricular = new HashMap<>();
         ccurricular.put("carga_horaria_total",componenteCurricular.getCarga_horaria_total());

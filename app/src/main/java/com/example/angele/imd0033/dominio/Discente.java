@@ -1,4 +1,4 @@
-package com.example.angele.imd0033.Dominio;
+package com.example.angele.imd0033.dominio;
 
 public class Discente {
     private int ano_ingresso;

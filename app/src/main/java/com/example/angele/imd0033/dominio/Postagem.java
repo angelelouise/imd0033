@@ -1,30 +1,30 @@
-package com.example.angele.imd0033.Dominio;
+package com.example.angele.imd0033.dominio;
 
-import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
 
-@Entity(tableName = "postagem")
+@Entity(tableName = "postagem", foreignKeys = {
+        @ForeignKey(entity = Usuario.class,
+            parentColumns = {"id_usuario","nome_pessoa"},
+            childColumns = {"id_usuario","usuario"}),
+        @ForeignKey(entity = ComponenteCurricular.class,
+                parentColumns = "id_componente",
+                childColumns = "id_componente_curricular")})
+
 public class Postagem {
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "id_postagem")
     private Long id_postagem;
 
-    @ColumnInfo(name = "id_usuario")
     private Long id_usuario;
 
-    @ColumnInfo(name = "id_componente_curricular")
     private Long id_componente_curricular;
 
-    @ColumnInfo(name = "descricao")
     private String descricao;
 
-    @ColumnInfo(name = "titulo")
     private String titulo;
 
-    @ColumnInfo(name = "usuario")
     private String usuario;
-
     public Postagem(Long id_postagem,
                     Long id_usuario,
                     Long id_componente_curricular,

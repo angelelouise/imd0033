@@ -3,13 +3,9 @@ package com.example.angele.imd0033;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-
-import android.os.AsyncTask;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -21,9 +17,8 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.angele.imd0033.Dominio.Usuario;
+import com.example.angele.imd0033.dominio.Usuario;
 import com.example.angele.imd0033.api.UsuarioService;
 
 import retrofit2.Call;

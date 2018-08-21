@@ -4,7 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.example.angele.imd0033.Dominio.Postagem;
+import com.example.angele.imd0033.dominio.Postagem;
 import com.example.angele.imd0033.bd.PostagemDAO;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -20,7 +20,7 @@ import static android.support.constraint.Constraints.TAG;
 public class PostagemDAOFirestore implements PostagemDAO{
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    public void inserirPostagem(Postagem postagem){
+    public void inserir(Postagem postagem){
         // Create a new user with a first and last name
         Map<String, Object> post = new HashMap<>();
         post.put("first", "Ada");

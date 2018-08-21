@@ -1,4 +1,4 @@
-package com.example.angele.imd0033.Dominio;
+package com.example.angele.imd0033.dominio;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;

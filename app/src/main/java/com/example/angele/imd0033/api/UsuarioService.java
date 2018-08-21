@@ -1,6 +1,6 @@
 package com.example.angele.imd0033.api;
 
-import com.example.angele.imd0033.Dominio.Usuario;
+import com.example.angele.imd0033.dominio.Usuario;
 
 import java.util.List;
 

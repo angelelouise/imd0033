@@ -3,8 +3,7 @@ package com.example.angele.imd0033.bd.firestore;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.example.angele.imd0033.Dominio.ComponenteCurricular;
-import com.example.angele.imd0033.Dominio.Usuario;
+import com.example.angele.imd0033.dominio.Usuario;
 import com.example.angele.imd0033.bd.UsuarioDAO;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -25,7 +24,7 @@ import static android.support.constraint.Constraints.TAG;
 public class UsuarioDAOFirestore implements UsuarioDAO {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    private void inserirUsuario(Usuario usuario){
+    private void inserir(Usuario usuario){
         // Create a new user with a first and last name
         Map<String, Object> user = new HashMap<>();
         user.put("ativo",usuario.isAtivo() );
