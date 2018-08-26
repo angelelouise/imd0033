@@ -33,7 +33,7 @@ public interface PostagemDAO {
     @Query("SELECT * FROM postagem WHERE id_usuario = :id_usuario")
     public LiveData<List<Postagem>> findByUsuario(Long id_usuario);
 
-    @Query("SELECT * FROM postagem INNER JOIN usuario ON (usuario.id_usuario = postagem.id_usuario)WHERE usuario.nome_pessoa = :nome")
+    @Query("SELECT * FROM postagem INNER JOIN usuario ON (usuario.id = postagem.id_usuario)WHERE usuario.usuario_nome = :nome")
     public LiveData<List<Postagem>> findByAutor(String nome);
 
     @Query("SELECT * FROM postagem WHERE id_componente_curricular = :id_componente")

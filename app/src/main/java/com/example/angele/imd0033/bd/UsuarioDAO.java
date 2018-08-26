@@ -22,7 +22,7 @@ public interface UsuarioDAO {
     @Delete
     public void deletar (Usuario usuario);
 
-    @Query("SELECT * FROM usuario ORDER BY id_usuario ASC")
+    @Query("SELECT * FROM usuario ORDER BY id ASC")
     public List<Usuario> buscarTodos();
 
     @Query("SELECT * FROM usuario WHERE login = :login LIMIT 1")

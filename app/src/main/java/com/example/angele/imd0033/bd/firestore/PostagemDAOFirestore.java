@@ -20,15 +20,23 @@ import static android.support.constraint.Constraints.TAG;
 public class PostagemDAOFirestore implements PostagemDAO{
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    public void inserir(Postagem postagem){
-        // Create a new user with a first and last name
+    private Map<String,Object> popularDados(Postagem postagem){
         Map<String, Object> post = new HashMap<>();
-        post.put("first", "Ada");
-        post.put("last", "Lovelace");
-        post.put("born", 1815);
+        post.put("descricao",postagem.getDescricao());
+        post.put("titulo",postagem.getTitulo());
+        post.put("id_componente_curricular",postagem.getId_componente_curricular());
+        post.put("id_postagem",postagem.getId_postagem());
+        post.put("id_usuario",postagem.getId_usuario());
+        post.put("usuario",postagem.getUsuario());
 
-// Add a new document with a generated ID
-        db.collection("users")
+        return post;
+    }
+    public void inserir(Postagem postagem){
+        Map<String, Object> post = new HashMap<>();
+        post = popularDados(postagem);
+
+    // Add a new document with a generated ID
+        db.collection("postagem")
                 .add(post)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
@@ -45,7 +53,37 @@ public class PostagemDAOFirestore implements PostagemDAO{
     }
 
     @Override
+    public void atualizar(Postagem postagem) {
+
+    }
+
+    @Override
+    public void deletar(Postagem postagem) {
+
+    }
+
+    @Override
+    public LiveData<Postagem> findById(Long id) {
+        return null;
+    }
+
+    @Override
+    public LiveData<List<Postagem>> findByUsuario(Long id_usuario) {
+        return null;
+    }
+
+    @Override
+    public LiveData<List<Postagem>> findByAutor(String nome) {
+        return null;
+    }
+
+    @Override
+    public LiveData<List<Postagem>> findByComponente(Long id_componente) {
+        return null;
+    }
+
+    @Override
     public LiveData<List<Postagem>> buscarTodas() {
-        return new FirebaseQueryLiveData(db.collection("palavra").whereGreaterThanOrEqualTo("id", 0));
+        return new FirebaseQueryLiveData(db.collection("postagem").whereGreaterThanOrEqualTo("id", 0));
     }
 }

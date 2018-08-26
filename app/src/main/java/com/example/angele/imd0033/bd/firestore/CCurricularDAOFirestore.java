@@ -24,8 +24,7 @@ import static android.support.constraint.Constraints.TAG;
 public class CCurricularDAOFirestore implements CCurricularDAO{
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    public void inserir(ComponenteCurricular componenteCurricular){
-        // Create a new user with a first and last name
+    private Map<String,Object> popularDados(ComponenteCurricular componenteCurricular){
         Map<String, Object> ccurricular = new HashMap<>();
         ccurricular.put("carga_horaria_total",componenteCurricular.getCarga_horaria_total());
         ccurricular.put("co_requisitos", componenteCurricular.getCo_requisitos());
@@ -39,6 +38,12 @@ public class CCurricularDAOFirestore implements CCurricularDAO{
         ccurricular.put("nome", componenteCurricular.getNome());
         ccurricular.put("pre_requisitos", componenteCurricular.getPre_requisitos());
         ccurricular.put("semestre_oferta", componenteCurricular.getSemestre_oferta());
+        return ccurricular;
+    }
+    public void inserir(ComponenteCurricular componenteCurricular){
+        // Create a new user with a first and last name
+        Map<String, Object> ccurricular = new HashMap<>();
+        ccurricular = popularDados(componenteCurricular);
 
 // Add a new document with a generated ID
         db.collection("componente_curricular")
@@ -55,6 +60,21 @@ public class CCurricularDAOFirestore implements CCurricularDAO{
                         Log.w(TAG, "Error adding document", e);
                     }
                 });
+    }
+
+    @Override
+    public void atualizar(ComponenteCurricular cc) {
+
+    }
+
+    @Override
+    public void deletar(ComponenteCurricular cc) {
+
+    }
+
+    @Override
+    public ComponenteCurricular findById(int id) {
+        return null;
     }
 
     @Override

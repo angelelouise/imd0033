@@ -3,7 +3,11 @@ package com.example.angele.imd0033;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 
@@ -18,8 +22,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.angele.imd0033.bd.UsuarioDAO;
+import com.example.angele.imd0033.bd.UsuarioRepository;
+import com.example.angele.imd0033.bd.firestore.UsuarioDAOFirestore;
 import com.example.angele.imd0033.dominio.Usuario;
 import com.example.angele.imd0033.api.UsuarioService;
+import com.example.angele.imd0033.view.UsuarioViewModel;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,10 +45,13 @@ public class LoginActivity extends AppCompatActivity {
         private EditText mPasswordView;
         private View mProgressView;
         private View mLoginFormView;
+        private Button mCadastroView;
+        Button mSignInButton;
     }
     private Usuario usuario_principal;
     private ViewHolder mViewHolder = new ViewHolder();
-
+    private UsuarioViewModel usuarioViewModel;
+    private UsuarioRepository usuarioRepository ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,25 +72,29 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        Button mSignInButton = findViewById(R.id.sign_in_button);
-        mSignInButton.setOnClickListener(new OnClickListener() {
+        mViewHolder.mSignInButton = findViewById(R.id.sign_in_button);
+        mViewHolder.mSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                usuario_principal = new Usuario(true,
-                        "sss",
-                        1111,
-                        "email@email.com",
-                        1,
-                        1100,
-                        1,
-                        "angele",
-                        "angele",
-                        "Angele Louise",
-                        "ddd");
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                intent.putExtra("user", usuario_principal);
+                /*0 usuário não existe
+                * 1 usuário existe mas senha está errada
+                * 2 tudo certo*/
+                if (tentativaLogin()==2){
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    intent.putExtra(usuario_principal.USUARIO, usuario_principal);
+                    startActivity(intent);
+                }
+
+            }
+        });
+        mViewHolder.mCadastroView = findViewById(R.id.register_button);
+        mViewHolder.mCadastroView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(LoginActivity.this, CadastroUsuarioActivity.class);
                 startActivity(intent);
-                //tentativaLogin();
+
             }
         });
 
@@ -93,8 +108,8 @@ public class LoginActivity extends AppCompatActivity {
      * If there are form errors (invalid email, missing fields, etc.), the
      * errors are presented and no actual login attempt is made.
      */
-    private void tentativaLogin() {
-
+    private int tentativaLogin() {
+        int flag =1;
         // Reset errors.
         mViewHolder.mLoginView.setError(null);
         mViewHolder.mPasswordView.setError(null);
@@ -107,28 +122,34 @@ public class LoginActivity extends AppCompatActivity {
         View focusView = null;
 
         // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+        if (TextUtils.isEmpty(password)) {
             mViewHolder.mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mViewHolder.mPasswordView;
             cancel = true;
-        }
 
-        // Check for a valid email address.
-        if (TextUtils.isEmpty(login)) {
+        }else if (TextUtils.isEmpty(login)) {
             mViewHolder.mLoginView.setError(getString(R.string.error_field_required));
             focusView = mViewHolder.mLoginView;
             cancel = true;
+
         }
         if (cancel) {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
             focusView.requestFocus();
+
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            UserLoginTask(login, password);
+            if (UserLoginTask(login, password)){
+                flag=2;
+            }else {
+                flag=0;
+            }
+
         }
+        return flag;
     }
 
     private boolean isPasswordValid(String password) {
@@ -170,75 +191,52 @@ public class LoginActivity extends AppCompatActivity {
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
-    private Retrofit ConnectRetrofit (String url){
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(url)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        return retrofit;
-    }
-    private boolean AtenticarAPIUFRN(){
-        boolean status = false;
-        Retrofit retrofit = ConnectRetrofit(sAtentication);
 
 
+    private boolean UserLoginTask (String login, final String password){
 
-        return status;
-    }
-    private void UserLoginTask (String login, final String password){
+        //usuarioViewModel = ViewModelProviders.of(this).get(UsuarioViewModel.class);
+        usuarioRepository = new UsuarioRepository(getApplication());
+        Boolean conectou =false;
 
-        String mLogin = login;
+        final String mLogin = login;
         final String mPassword = password;
+        Usuario aux;
 
-        //só pra conectar
+        aux =usuarioRepository.findByLogin(mLogin);
 
-        Retrofit retrofit = ConnectRetrofit(sBaseUrl);
+        /*aux = new Usuario(true,
+                "sss",
+                1111,
+                "email@email.com",
+                1,
+                1100,
+                1,
+                "angele",
+                "admin",
+                "Angele Louise",
+                "ddd");*/
 
-        final UsuarioService service = retrofit.create(UsuarioService.class);
-
-        final Call<Usuario> listarUsuario = service.UsuarioDTO(mLogin); //retorna o usuário do servico
-
-        listarUsuario.enqueue(new Callback<Usuario>() {
-            @Override
-            public void onResponse(@NonNull Call<Usuario> call, @NonNull Response<Usuario> response) {
-                //verifica se a senha foi digitada corretamente
-                assert response.body() != null;
-                if (isPasswordValid(response.body().getSenha())){
-                    if (popular_dados(response.body())){
-                        //Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        //intent.putExtra(Usuario.USUARIO_INFO, usuario_principal);
-                        //startActivity(intent);
-                    }
-                }else{
-                    showProgress(false);
-                    mViewHolder.mPasswordView.setError(getString(R.string.error_incorrect_password));
-                    mViewHolder.mPasswordView.requestFocus();
-                    /*Toast.makeText(LoginActivity.this,
-                            "Senha ou usuário incorretos",
-                            Toast.LENGTH_SHORT).show();*/
-                }
-
-
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<Usuario> call, @NonNull Throwable t) {
+        if(aux!=null){
+            if(aux.getSenha().equals(mPassword)){
+                usuario_principal=aux;
+                conectou=true;
+            }else{
                 showProgress(false);
-                mViewHolder.mPasswordView.setError(getString(R.string.error_invalid_user));
+                mViewHolder.mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mViewHolder.mPasswordView.requestFocus();
-                /*Toast.makeText(LoginActivity.this,
-                        "Usuario não existe",
-                        Toast.LENGTH_SHORT).show();*/
             }
-        });
-
+        }else{
+            mViewHolder.mPasswordView.setError(getString(R.string.error_invalid_user));
+            mViewHolder.mPasswordView.requestFocus();
+        }
+        return conectou;
     }
-    private boolean popular_dados(Usuario user){
-        usuario_principal= new Usuario(user.isAtivo(),user.getChave_foto(),user.getCpf_cnpj(),user.getEmail(),user.getId_foto(),
-                user.getId_unidade(),user.getId_usuario(),user.getLogin(),user.getSenha(),user.getNome_pessoa(),user.getUrl_foto());
-
-        return true;
+    private boolean netOn(){
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
     }
 }
 

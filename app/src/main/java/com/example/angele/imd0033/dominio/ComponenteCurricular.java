@@ -6,7 +6,7 @@ import android.arch.persistence.room.PrimaryKey;
 
 @Entity(tableName = "componente_curricular")
 public class ComponenteCurricular {
-
+    public static final String COMPONENTE = "CC_INFO";
     private int carga_horaria_total;
     private String co_requisitos;
     private String codigo;

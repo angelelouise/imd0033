@@ -6,13 +6,14 @@ import android.arch.persistence.room.PrimaryKey;
 
 @Entity(tableName = "postagem", foreignKeys = {
         @ForeignKey(entity = Usuario.class,
-            parentColumns = {"id_usuario","nome_pessoa"},
+            parentColumns = {"id","usuario_nome"},
             childColumns = {"id_usuario","usuario"}),
         @ForeignKey(entity = ComponenteCurricular.class,
                 parentColumns = "id_componente",
                 childColumns = "id_componente_curricular")})
 
 public class Postagem {
+    public static final String POSTAGEM = "POSTAGEM_INFO";
     @PrimaryKey(autoGenerate = true)
     private Long id_postagem;
 

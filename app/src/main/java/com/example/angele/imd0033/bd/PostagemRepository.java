@@ -2,7 +2,11 @@ package com.example.angele.imd0033.bd;
 
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
+
+import com.example.angele.imd0033.bd.firestore.PostagemDAOFirestore;
 import com.example.angele.imd0033.dominio.Postagem;
 
 import java.util.List;
@@ -16,15 +20,29 @@ public class PostagemRepository {
     private LiveData<List<Postagem>> listaPostagem;
     private LiveData<Postagem> postagem;
     private PostagemDAO postagemDAO;
+    private PostagemDAOFirestore postagemDAOFirestore;
+
+    private ConnectivityManager cm;
+    private boolean hasNet;
 
     public PostagemRepository(Application app) {
         postagemDAO = PostagemBD.getInstance(app).postagemDAO();
+        postagemDAOFirestore = new PostagemDAOFirestore();
+        cm =(ConnectivityManager)app
+                .getSystemService(app.CONNECTIVITY_SERVICE);
     }
 
     public LiveData<List<Postagem>> buscarTodas() {
-        if (listaPostagem==null){
-            listaPostagem = postagemDAO.buscarTodas();
+        if (netOn()){
+            if (listaPostagem==null){
+                listaPostagem = postagemDAOFirestore.buscarTodas();
+            }
+        }else{
+            if (listaPostagem==null){
+                listaPostagem = postagemDAO.buscarTodas();
+            }
         }
+
         return listaPostagem;
     }
 
@@ -54,10 +72,12 @@ public class PostagemRepository {
     }
 
     public void inserir (Postagem postagem){
+        postagemDAOFirestore.inserir(postagem);
         new InsertASync(postagemDAO).execute(postagem);
     }
 
     public void atualizar (Postagem postagem){
+        postagemDAOFirestore.atualizar(postagem);
         new InsertASync(postagemDAO).execute(postagem);
     }
 
@@ -77,5 +97,9 @@ public class PostagemRepository {
             return null;
         }
     }
-
+    private boolean netOn(){
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+    }
 }

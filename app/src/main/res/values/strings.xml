@@ -5,7 +5,7 @@
     <string name="prompt_email">Login</string>
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
+    <string name="action_sign_in_short">Entrar</string>
     <string name="error_invalid_user">This user is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
@@ -39,4 +39,5 @@
     <string name="obrigat_ria">Obrigatória</string>
     <string name="carga_hor_ria">Carga Horária:</string>
     <string name="semestre_oferta">Semestre Oferta:</string>
+    <string name="cadastre_se">Cadastre-se</string>
 </resources>

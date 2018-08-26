@@ -2,13 +2,14 @@ package com.example.angele.imd0033.dominio;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
 import java.io.Serializable;
-@Entity(tableName = "usuario")
+@Entity(tableName = "usuario", indices = {@Index(value={"id","usuario_nome"},unique = true)})
 public class Usuario implements Serializable {
-
+    public static final String USUARIO = "USUARIO_INFO";
     private boolean ativo;
     private String chave_foto;
     private int cpf_cnpj;
@@ -17,7 +18,7 @@ public class Usuario implements Serializable {
     private int id_unidade;
 
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "id_usuario")
+    @ColumnInfo(name = "id")
     private int id_usuario;
 
     @NonNull
@@ -25,7 +26,10 @@ public class Usuario implements Serializable {
 
     @NonNull
     private String senha;
+
+    @ColumnInfo(name = "usuario_nome")
     private String nome_pessoa;
+
     private String url_foto;
 
     public Usuario(boolean ativo, String chave_foto, int cpf_cnpj, String email, int id_foto, int id_unidade, int id_usuario, String login, String senha, String nome_pessoa, String url_foto) {

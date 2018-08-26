@@ -24,8 +24,7 @@ import static android.support.constraint.Constraints.TAG;
 public class UsuarioDAOFirestore implements UsuarioDAO {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    private void inserir(Usuario usuario){
-        // Create a new user with a first and last name
+    private Map<String,Object> popularDados(Usuario usuario){
         Map<String, Object> user = new HashMap<>();
         user.put("ativo",usuario.isAtivo() );
         user.put("id_usuario", usuario.getId_usuario());
@@ -38,9 +37,16 @@ public class UsuarioDAOFirestore implements UsuarioDAO {
         user.put("nome_pessoa", usuario.getNome_pessoa());
         user.put("chave_foto", usuario.getChave_foto());
         user.put("url_foto", usuario.getUrl_foto());
+        return user;
+    }
 
-// Add a new document with a generated ID
-        db.collection("users")
+    public void inserir(Usuario usuario){
+        // Create a new user with a first and last name
+        Map<String, Object> user = new HashMap<>();
+        user = popularDados(usuario);
+
+        // Add a new document with a generated ID
+        db.collection("usuario")
                 .add(user)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
@@ -57,9 +63,35 @@ public class UsuarioDAOFirestore implements UsuarioDAO {
     }
 
     @Override
-    public List<Usuario> buscarTodas() {
-        final List<Usuario> componentes = new ArrayList<>();
-        db.collection("users")
+    public void atualizar(Usuario usuario) {
+        Map<String, Object> user = new HashMap<>();
+        user = popularDados(usuario);
+
+    }
+
+    @Override
+    public void deletar(Usuario usuario) {
+
+    }
+
+    @Override
+    public Usuario findByLogin(String login) {
+        final Usuario[] usuario = new Usuario[1];
+        db.collection("usuario").document(login)
+                .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                usuario[0] = documentSnapshot.toObject(Usuario.class);
+            }
+        });
+
+        return usuario[0];
+    }
+
+    @Override
+    public List<Usuario> buscarTodos() {
+        final List<Usuario> usuarios = new ArrayList<>();
+        db.collection("usuario")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -68,19 +100,18 @@ public class UsuarioDAOFirestore implements UsuarioDAO {
                             for (DocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
                                 Usuario u = new Usuario(
-                                        document.getBoolean("carga_horaria_total"),
-                                        document.getString("co_requisitos"),
-                                        document.getString("codigo"),
-                                        document.getString("componentesBloco"),
-                                        document.getString("departamento"),
-                                        document.getString("disciplina_obrigatoria"),
-                                        document.getString("equivalentes"),
-                                        document.getLong("id_componente").intValue(),
-                                        document.getLong("id_matriz_curricular").intValue(),
-                                        document.getString("nome"),
-                                        document.getString("pre_requisitos"),
-                                        document.getLong("semestre__oferta").intValue());
-                                componentes.add(u);
+                                        document.getBoolean("ativo"),
+                                        document.getString("chave_foto"),
+                                        document.getLong("cpf_cpnj").intValue(),
+                                        document.getString("email"),
+                                        document.getLong("id_foto").intValue(),
+                                        document.getLong("id_unidade").intValue(),
+                                        document.getLong("id_usuario").intValue(),
+                                        document.getString("login"),
+                                        document.getString("senha"),
+                                        document.getString("nome_pessoa"),
+                                        document.getString("url_foto"));
+                                usuarios.add(u);
                             }
                         } else {
                             Log.w(TAG, "Error getting documents.", task.getException());
@@ -88,6 +119,6 @@ public class UsuarioDAOFirestore implements UsuarioDAO {
                     }
                 });
 
-        return componentes;
+        return usuarios;
     }
 }
