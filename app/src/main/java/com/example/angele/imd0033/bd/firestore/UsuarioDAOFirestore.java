@@ -77,11 +77,32 @@ public class UsuarioDAOFirestore implements UsuarioDAO {
     @Override
     public Usuario findByLogin(String login) {
         final Usuario[] usuario = new Usuario[1];
-        db.collection("usuario").document(login)
-                .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        db.collection("usuario").whereEqualTo("login",login)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                usuario[0] = documentSnapshot.toObject(Usuario.class);
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (DocumentSnapshot document : task.getResult()) {
+                        Log.d(TAG, document.getId() + " => " + document.getData());
+                        if(document!=null){
+                            usuario[0] =  new Usuario(
+                                    document.getBoolean("ativo"),
+                                    document.getString("chave_foto"),
+                                    document.getLong("cpf_cnpj").intValue(),
+                                    document.getString("email"),
+                                    document.getLong("id_foto").intValue(),
+                                    document.getLong("id_unidade").intValue(),
+                                    document.getLong("id_usuario").intValue(),
+                                    document.getString("login"),
+                                    document.getString("senha"),
+                                    document.getString("nome_pessoa"),
+                                    document.getString("url_foto"));
+                        }
+                    }
+                } else {
+                    Log.d(TAG, "Error getting documents: ", task.getException());
+                }
             }
         });
 
