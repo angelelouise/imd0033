@@ -52,9 +52,10 @@ public class PostagemAdapter extends RecyclerView.Adapter<PostagemAdapter.Postag
         public PostagemViewHolder(View itemView) {
             super(itemView);
             //bind elements
+
             viewTitulo = itemView.findViewById(R.id.textTitulo);
             viewDescricao = itemView.findViewById(R.id.textDescricao);
-            //viewComponente = itemView.findViewById()
+            //viewComponente = itemView.findViewById();
             viewAutor = itemView.findViewById(R.id.textAutor);
             viewShare= itemView.findViewById(R.id.imageButtonShare);
         }
