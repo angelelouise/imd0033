@@ -70,8 +70,9 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        //Firebase
-        //FirebaseMessaging.getInstance().subscribeToTopic("teste");
+        //Firebase FMC
+        FirebaseMessaging.getInstance().subscribeToTopic("postagens");
+
         recList = findViewById(R.id.recycler_postagens);
         postagens = new ArrayList<Postagem>();
         postagemAdapter = new PostagemAdapter(MainActivity.this, postagens);
@@ -88,6 +89,7 @@ public class MainActivity extends AppCompatActivity
                 postagemAdapter.notifyDataSetChanged();
             }
         });
+
 
 
 
