@@ -21,8 +21,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
+import android.widget.Toast;
 
 import com.example.angele.imd0033.dominio.Postagem;
+import com.example.angele.imd0033.dominio.Usuario;
 import com.example.angele.imd0033.view.PostagemAdapter;
 import com.example.angele.imd0033.view.PostagemViewModel;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -38,6 +40,8 @@ public class MainActivity extends AppCompatActivity
     List<Postagem> postagens;
     PostagemAdapter postagemAdapter;
     RecyclerView recList;
+    private Usuario usuario = new Usuario();
+    public static int NOVA_POSTAGEM = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,10 +53,13 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent =  new Intent(MainActivity.this, CadastroPostagemActivity.class);
+                startActivityForResult(intent, NOVA_POSTAGEM);
             }
         });
+        //receber o usuário do login
+        Intent receberUsuarioLogin = getIntent();
+        usuario = (Usuario) receberUsuarioLogin.getExtras().get(usuario.USUARIO);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -67,7 +74,7 @@ public class MainActivity extends AppCompatActivity
         //FirebaseMessaging.getInstance().subscribeToTopic("teste");
         recList = findViewById(R.id.recycler_postagens);
         postagens = new ArrayList<Postagem>();
-        postagemAdapter = new PostagemAdapter(getApplicationContext(), postagens);
+        postagemAdapter = new PostagemAdapter(MainActivity.this, postagens);
         recList.setAdapter(postagemAdapter);
         recList.setLayoutManager(new LinearLayoutManager(this));
 
@@ -85,12 +92,7 @@ public class MainActivity extends AppCompatActivity
 
 
     }
-    public void share(View v){
 
-        Intent send = new Intent();
-        send.setAction(Intent.ACTION_SEND);
-        //send.putExtra(Intent.EXTRA_TEXT,  )
-    }
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -117,6 +119,7 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            finish();
             return true;
         }
 
@@ -146,5 +149,20 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode  == RESULT_OK && requestCode == NOVA_POSTAGEM){
+
+            Postagem p = new Postagem();
+            p = (Postagem) data.getExtras().getSerializable(CadastroPostagemActivity.INFO_EXTRA);
+            p.setId_usuario((long) usuario.getId_usuario());
+            p.setUsuario(usuario.getNome_pessoa());
+            postagemViewModel.inserir(p);
+        }else{
+            Toast.makeText(getApplicationContext(), "Deu ruim!",Toast.LENGTH_SHORT );
+        }
     }
 }
