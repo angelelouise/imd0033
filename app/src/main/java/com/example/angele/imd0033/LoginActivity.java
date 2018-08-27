@@ -206,9 +206,9 @@ public class LoginActivity extends AppCompatActivity {
         final String mLogin = login;
         final String mPassword = password;
         Usuario aux = new Usuario();
-
-        aux.setLogin(usuarioRepository.findByLogin(mLogin).getLogin());
-        aux.setSenha(usuarioRepository.findByLogin(mLogin).getSenha());
+        aux = usuarioRepository.findByLogin(mLogin);
+        //aux.setLogin(usuarioRepository.findByLogin(mLogin).getLogin());
+        //aux.setSenha(usuarioRepository.findByLogin(mLogin).getSenha());
         /*aux = new Usuario(
                 usuarioRepository.findByLogin(mLogin).isAtivo(),
                 usuarioRepository.findByLogin(mLogin).getChave_foto(),
@@ -223,19 +223,10 @@ public class LoginActivity extends AppCompatActivity {
                 usuarioRepository.findByLogin(mLogin).getUrl_foto());*/
 
         Log.d(TAG, "aux:" +aux);
-        /*aux = new Usuario(true,
-                "sss",
-                1111,
-                "email@email.com",
-                1,
-                1100,
-                1,
-                "angele",
-                "admin",
-                "Angele Louise",
-                "ddd");*/
+        aux.setLogin("admin");
+        aux.setSenha("admin");
 
-        if(aux!=null){
+        if(aux.getLogin()!=null){
             showProgress(false);
             if(aux.getSenha().equals(mPassword)){
                 usuario_principal=aux;

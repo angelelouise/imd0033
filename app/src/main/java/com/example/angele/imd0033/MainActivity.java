@@ -1,8 +1,16 @@
 package com.example.angele.imd0033;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,12 +20,24 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 
+import com.example.angele.imd0033.dominio.Postagem;
+import com.example.angele.imd0033.view.PostagemAdapter;
+import com.example.angele.imd0033.view.PostagemViewModel;
 import com.google.firebase.messaging.FirebaseMessaging;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static java.util.Collections.addAll;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
+    private PostagemViewModel postagemViewModel;
+    List<Postagem> postagens;
+    PostagemAdapter postagemAdapter;
+    RecyclerView recList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,8 +65,32 @@ public class MainActivity extends AppCompatActivity
 
         //Firebase
         //FirebaseMessaging.getInstance().subscribeToTopic("teste");
-    }
+        recList = findViewById(R.id.recycler_postagens);
+        postagens = new ArrayList<Postagem>();
+        postagemAdapter = new PostagemAdapter(getApplicationContext(), postagens);
+        recList.setAdapter(postagemAdapter);
+        recList.setLayoutManager(new LinearLayoutManager(this));
 
+        postagemViewModel = ViewModelProviders.of(this).get(PostagemViewModel.class);
+        postagemViewModel.getListaPostagem().observe(this, new Observer<List<Postagem>>() {
+            @Override
+            public void onChanged(@Nullable List<Postagem> post) {
+                //postagemAdapter.setPalavras(post);
+                Log.d("post","post" +post);
+                postagens.addAll(post);
+                postagemAdapter.notifyDataSetChanged();
+            }
+        });
+
+
+
+    }
+    public void share(View v){
+
+        Intent send = new Intent();
+        send.setAction(Intent.ACTION_SEND);
+        //send.putExtra(Intent.EXTRA_TEXT,  )
+    }
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

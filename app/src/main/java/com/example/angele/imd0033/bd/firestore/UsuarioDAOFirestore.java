@@ -99,8 +99,8 @@ public class UsuarioDAOFirestore implements UsuarioDAO {
                                     u.setSenha(document.getString("senha"));
                                     u.setNome_pessoa(document.getString("nome_pessoa"));
                                     u.setUrl_foto(document.getString("url_foto"));
-                            usuario =u;
-                            //usuario = document.toObject(Usuario.class);
+                            usuario = u;
+
                             Log.d(TAG, "user:" + usuario);
                     }
                 } else {

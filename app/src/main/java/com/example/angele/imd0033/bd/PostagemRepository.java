@@ -34,13 +34,10 @@ public class PostagemRepository {
 
     public LiveData<List<Postagem>> buscarTodas() {
         if (netOn()){
-            if (listaPostagem==null){
                 listaPostagem = postagemDAOFirestore.buscarTodas();
-            }
+
         }else{
-            if (listaPostagem==null){
                 listaPostagem = postagemDAO.buscarTodas();
-            }
         }
 
         return listaPostagem;
