@@ -1,5 +1,6 @@
 package com.example.angele.imd0033.bd;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
@@ -24,8 +25,8 @@ public interface CCurricularDAO {
     public void deletar (ComponenteCurricular cc);
 
     @Query("SELECT * FROM componente_curricular WHERE id_componente = :id LIMIT 1")
-    public ComponenteCurricular findById(int id);
+    public LiveData<ComponenteCurricular> findById(int id);
 
-    @Query("SELECT * FROM componente_curricular ORDER BY id_componente_curricular ASC")
-    public List<ComponenteCurricular> buscarTodas();
+    @Query("SELECT * FROM componente_curricular ORDER BY id_componente ASC")
+    public LiveData<List<ComponenteCurricular>> buscarTodas();
 }

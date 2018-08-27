@@ -1,5 +1,6 @@
 package com.example.angele.imd0033.bd.firestore;
 
+import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -45,7 +46,7 @@ public class CCurricularDAOFirestore implements CCurricularDAO{
         Map<String, Object> ccurricular = new HashMap<>();
         ccurricular = popularDados(componenteCurricular);
 
-// Add a new document with a generated ID
+    // Add a new document with a generated ID
         db.collection("componente_curricular")
                 .add(ccurricular)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -73,11 +74,14 @@ public class CCurricularDAOFirestore implements CCurricularDAO{
     }
 
     @Override
-    public ComponenteCurricular findById(int id) {
+    public LiveData<ComponenteCurricular> findById(int id) {
         return null;
     }
 
-    @Override
+    public LiveData<List<ComponenteCurricular>> buscarTodas() {
+        return new ComponenteFirebaseQueryLiveData(db.collection("componente_curricular").whereGreaterThanOrEqualTo("id_componente", 0));
+    }
+    /*@Override
     public List<ComponenteCurricular> buscarTodas() {
         final List<ComponenteCurricular> componentes = new ArrayList<>();
         db.collection("componente_curricular")
@@ -111,5 +115,6 @@ public class CCurricularDAOFirestore implements CCurricularDAO{
                 });
 
         return componentes;
-    }
+    }*/
+
 }
