@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -34,6 +35,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+import static android.support.constraint.Constraints.TAG;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -83,6 +86,7 @@ public class LoginActivity extends AppCompatActivity {
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     intent.putExtra(usuario_principal.USUARIO, usuario_principal);
                     startActivity(intent);
+
                 }
 
             }
@@ -201,10 +205,24 @@ public class LoginActivity extends AppCompatActivity {
 
         final String mLogin = login;
         final String mPassword = password;
-        Usuario aux;
+        Usuario aux = new Usuario();
 
-        aux =usuarioRepository.findByLogin(mLogin);
+        aux.setLogin(usuarioRepository.findByLogin(mLogin).getLogin());
+        aux.setSenha(usuarioRepository.findByLogin(mLogin).getSenha());
+        /*aux = new Usuario(
+                usuarioRepository.findByLogin(mLogin).isAtivo(),
+                usuarioRepository.findByLogin(mLogin).getChave_foto(),
+                usuarioRepository.findByLogin(mLogin).getCpf_cnpj(),
+                usuarioRepository.findByLogin(mLogin).getEmail(),
+                usuarioRepository.findByLogin(mLogin).getId_foto(),
+                usuarioRepository.findByLogin(mLogin).getId_unidade(),
+                usuarioRepository.findByLogin(mLogin).getId_usuario(),
+                usuarioRepository.findByLogin(mLogin).getLogin(),
+                usuarioRepository.findByLogin(mLogin).getSenha(),
+                usuarioRepository.findByLogin(mLogin).getNome_pessoa(),
+                usuarioRepository.findByLogin(mLogin).getUrl_foto());*/
 
+        Log.d(TAG, "aux:" +aux);
         /*aux = new Usuario(true,
                 "sss",
                 1111,
@@ -218,15 +236,17 @@ public class LoginActivity extends AppCompatActivity {
                 "ddd");*/
 
         if(aux!=null){
+            showProgress(false);
             if(aux.getSenha().equals(mPassword)){
                 usuario_principal=aux;
                 conectou=true;
+
             }else{
-                showProgress(false);
                 mViewHolder.mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mViewHolder.mPasswordView.requestFocus();
             }
         }else{
+            showProgress(false);
             mViewHolder.mPasswordView.setError(getString(R.string.error_invalid_user));
             mViewHolder.mPasswordView.requestFocus();
         }

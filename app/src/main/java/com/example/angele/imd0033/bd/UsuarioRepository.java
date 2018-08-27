@@ -27,28 +27,25 @@ public class UsuarioRepository {
     }
     public Usuario findByLogin (String login){
         if (netOn()){
-            if (usuario==null){
                 usuario = usuarioDAOFirestore.findByLogin(login);
-            }
         }else{
-            if (usuario==null){
                 usuario = usuarioDAO.findByLogin(login);
-            }
         }
         return usuario;
     }
 
     public List<Usuario> buscarTodos (){
         if (netOn()){
-            if (usuarios==null){
                 usuarios = usuarioDAOFirestore.buscarTodos();
-            }
         }else{
-            if (usuario==null){
                 usuarios = usuarioDAO.buscarTodos();
-            }
         }
         return usuarios;
+    }
+
+    public void inserir (Usuario usuario){
+        usuarioDAOFirestore.inserir(usuario);
+        new InsertASync(usuarioDAO).execute(usuario);
     }
 
     private class InsertASync extends AsyncTask<Usuario, Void, Void> {

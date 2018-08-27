@@ -32,7 +32,17 @@ public class Usuario implements Serializable {
 
     private String url_foto;
 
-    public Usuario(boolean ativo, String chave_foto, int cpf_cnpj, String email, int id_foto, int id_unidade, int id_usuario, String login, String senha, String nome_pessoa, String url_foto) {
+    /*public Usuario(boolean ativo,
+                   String chave_foto,
+                   int cpf_cnpj,
+                   String email,
+                   int id_foto,
+                   int id_unidade,
+                   int id_usuario,
+                   String login,
+                   String senha,
+                   String nome_pessoa,
+                   String url_foto) {
         this.ativo = ativo;
         this.chave_foto = chave_foto;
         this.cpf_cnpj = cpf_cnpj;
@@ -44,7 +54,7 @@ public class Usuario implements Serializable {
         this.senha = senha;
         this.nome_pessoa = nome_pessoa;
         this.url_foto = url_foto;
-    }
+    }*/
 
     @Override
     public String toString() {

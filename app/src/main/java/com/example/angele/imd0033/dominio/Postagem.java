@@ -26,7 +26,7 @@ public class Postagem {
     private String titulo;
 
     private String usuario;
-    public Postagem(Long id_postagem,
+    /*public Postagem(Long id_postagem,
                     Long id_usuario,
                     Long id_componente_curricular,
                     String usuario,
@@ -38,7 +38,7 @@ public class Postagem {
         this.descricao = descricao;
         this.titulo = titulo;
         this.usuario = usuario;
-    }
+    }*/
 
     @Override
     public String toString() {

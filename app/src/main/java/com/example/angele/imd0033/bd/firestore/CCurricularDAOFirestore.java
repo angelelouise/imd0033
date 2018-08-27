@@ -88,19 +88,20 @@ public class CCurricularDAOFirestore implements CCurricularDAO{
                         if (task.isSuccessful()) {
                             for (DocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
-                                ComponenteCurricular c = new ComponenteCurricular(
-                                        document.getLong("carga_horaria_total").intValue(),
-                                        document.getString("co_requisitos"),
-                                        document.getString("codigo"),
-                                        document.getString("componentesBloco"),
-                                        document.getString("departamento"),
-                                        document.getString("disciplina_obrigatoria"),
-                                        document.getString("equivalentes"),
-                                        document.getLong("id_componente").intValue(),
-                                        document.getLong("id_matriz_curricular").intValue(),
-                                        document.getString("nome"),
-                                        document.getString("pre_requisitos"),
-                                        document.getLong("semestre__oferta").intValue());
+                                ComponenteCurricular c = new ComponenteCurricular();
+
+                                        c.setCarga_horaria_total(document.getLong("carga_horaria_total").intValue());
+                                        c.setCo_requisitos(document.getString("co_requisitos"));
+                                        c.setCodigo(document.getString("codigo"));
+                                        c.setComponentesBloco(document.getString("componentesBloco"));
+                                        c.setDepartamento(document.getString("departamento"));
+                                        c.setDisciplina_obrigatoria(document.getString("disciplina_obrigatoria"));
+                                        c.setEquivalentes(document.getString("equivalentes"));
+                                        c.setId_componente(document.getLong("id_componente").intValue());
+                                        c.setId_matriz_curricular(document.getLong("id_matriz_curricular").intValue());
+                                        c.setNome(document.getString("nome"));
+                                        c.setPre_requisitos(document.getString("pre_requisitos"));
+                                        c.setSemestre_oferta(document.getLong("semestre__oferta").intValue());
                                 componentes.add(c);
                             }
                         } else {

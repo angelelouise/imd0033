@@ -24,7 +24,7 @@ public class ComponenteCurricular {
     private String pre_requisitos;
     private int semestre_oferta;
 
-    public ComponenteCurricular(int carga_horaria_total,
+    /*public ComponenteCurricular(int carga_horaria_total,
                                 String co_requisitos,
                                 String codigo,
                                 String componentesBloco,
@@ -49,7 +49,7 @@ public class ComponenteCurricular {
         this.nome = nome;
         this.pre_requisitos = pre_requisitos;
         this.semestre_oferta = semestre_oferta;
-    }
+    }*/
 
     @Override
     public String toString() {

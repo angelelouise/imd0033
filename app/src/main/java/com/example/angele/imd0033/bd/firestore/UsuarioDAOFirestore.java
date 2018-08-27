@@ -14,6 +14,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,6 +24,7 @@ import static android.support.constraint.Constraints.TAG;
 
 public class UsuarioDAOFirestore implements UsuarioDAO {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private Usuario usuario = new Usuario();
 
     private Map<String,Object> popularDados(Usuario usuario){
         Map<String, Object> user = new HashMap<>();
@@ -76,7 +78,7 @@ public class UsuarioDAOFirestore implements UsuarioDAO {
 
     @Override
     public Usuario findByLogin(String login) {
-        final Usuario[] usuario = new Usuario[1];
+
         db.collection("usuario").whereEqualTo("login",login)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -85,28 +87,29 @@ public class UsuarioDAOFirestore implements UsuarioDAO {
                 if (task.isSuccessful()) {
                     for (DocumentSnapshot document : task.getResult()) {
                         Log.d(TAG, document.getId() + " => " + document.getData());
-                        if(document!=null){
-                            usuario[0] =  new Usuario(
-                                    document.getBoolean("ativo"),
-                                    document.getString("chave_foto"),
-                                    document.getLong("cpf_cnpj").intValue(),
-                                    document.getString("email"),
-                                    document.getLong("id_foto").intValue(),
-                                    document.getLong("id_unidade").intValue(),
-                                    document.getLong("id_usuario").intValue(),
-                                    document.getString("login"),
-                                    document.getString("senha"),
-                                    document.getString("nome_pessoa"),
-                                    document.getString("url_foto"));
-                        }
+                            Usuario u =  new Usuario();
+                                    u.setAtivo(document.getBoolean("ativo"));
+                                    u.setChave_foto(document.getString("chave_foto"));
+                                    u.setCpf_cnpj(document.getLong("cpf_cnpj").intValue());
+                                    u.setEmail(document.getString("email"));
+                                    u.setId_foto(document.getLong("id_foto").intValue());
+                                    u.setId_unidade(document.getLong("id_unidade").intValue());
+                                    u.setId_usuario(document.getLong("id_usuario").intValue());
+                                    u.setLogin(document.getString("login"));
+                                    u.setSenha(document.getString("senha"));
+                                    u.setNome_pessoa(document.getString("nome_pessoa"));
+                                    u.setUrl_foto(document.getString("url_foto"));
+                            usuario =u;
+                            //usuario = document.toObject(Usuario.class);
+                            Log.d(TAG, "user:" + usuario);
                     }
                 } else {
                     Log.d(TAG, "Error getting documents: ", task.getException());
                 }
             }
         });
-
-        return usuario[0];
+        Log.d(TAG, "user2:" +usuario);
+        return usuario;
     }
 
     @Override
@@ -120,18 +123,18 @@ public class UsuarioDAOFirestore implements UsuarioDAO {
                         if (task.isSuccessful()) {
                             for (DocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
-                                Usuario u = new Usuario(
-                                        document.getBoolean("ativo"),
-                                        document.getString("chave_foto"),
-                                        document.getLong("cpf_cpnj").intValue(),
-                                        document.getString("email"),
-                                        document.getLong("id_foto").intValue(),
-                                        document.getLong("id_unidade").intValue(),
-                                        document.getLong("id_usuario").intValue(),
-                                        document.getString("login"),
-                                        document.getString("senha"),
-                                        document.getString("nome_pessoa"),
-                                        document.getString("url_foto"));
+                                Usuario u = new Usuario();
+                                    u.setAtivo(document.getBoolean("ativo"));
+                                    u.setChave_foto(document.getString("chave_foto"));
+                                    u.setCpf_cnpj(document.getLong("cpf_cnpj").intValue());
+                                    u.setEmail(document.getString("email"));
+                                    u.setId_foto(document.getLong("id_foto").intValue());
+                                    u.setId_unidade(document.getLong("id_unidade").intValue());
+                                    u.setId_usuario(document.getLong("id_usuario").intValue());
+                                    u.setLogin(document.getString("login"));
+                                    u.setSenha(document.getString("senha"));
+                                    u.setNome_pessoa(document.getString("nome_pessoa"));
+                                    u.setUrl_foto(document.getString("url_foto"));
                                 usuarios.add(u);
                             }
                         } else {

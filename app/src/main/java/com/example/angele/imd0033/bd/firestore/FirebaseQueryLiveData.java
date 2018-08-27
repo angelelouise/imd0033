@@ -57,12 +57,13 @@ public class FirebaseQueryLiveData extends LiveData<List<Postagem>> {
             List<Postagem> postagens = new ArrayList<>();
 
             for(DocumentSnapshot doc : value.getDocuments()){
-                Postagem p = new Postagem(doc.getLong("id_postagem"),
-                        doc.getLong("id_usuario"),
-                        doc.getLong("id_componente_curricular"),
-                        doc.getString("usuario"),
-                        doc.getString("descricao"),
-                        doc.getString("titulo"));
+                Postagem p = new Postagem();
+                        p.setId_postagem(doc.getLong("id_postagem"));
+                        p.setId_usuario(doc.getLong("id_usuario"));
+                        p.setId_componente_curricular(doc.getLong("id_componente_curricular"));
+                        p.setUsuario(doc.getString("usuario"));
+                        p.setDescricao(doc.getString("descricao"));
+                        p.setTitulo(doc.getString("titulo"));
 
                 postagens.add(p);
             }
