@@ -31,7 +31,7 @@ public class CCAdapter extends RecyclerView.Adapter<CCAdapter.CCViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull CCViewHolder holder, int position) {
         ComponenteCurricular cc = CC.get(position);
-        holder.view_id_componente.setText(cc.getId_componente());
+        holder.view_id_componente.setText(String.valueOf(cc.getId_componente()));
         holder.view_codigo.setText(cc.getCodigo());
         holder.view_nome.setText(cc.getNome());
     }
@@ -59,9 +59,9 @@ public class CCAdapter extends RecyclerView.Adapter<CCAdapter.CCViewHolder> {
         public CCViewHolder(View itemView) {
             super(itemView);
 
-            view_nome.findViewById(R.id.text_nome);
-            view_codigo.findViewById(R.id.text_codigo);
-            view_id_componente.findViewById(R.id.text_id);
+            view_nome= itemView.findViewById(R.id.text_nome);
+            view_codigo= itemView.findViewById(R.id.text_codigo);
+            view_id_componente= itemView.findViewById(R.id.text_id);
         }
 
 

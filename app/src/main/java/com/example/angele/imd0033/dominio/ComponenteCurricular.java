@@ -4,8 +4,10 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
+import java.io.Serializable;
+
 @Entity(tableName = "componente_curricular")
-public class ComponenteCurricular {
+public class ComponenteCurricular implements Serializable{
     public static final String COMPONENTE = "CC_INFO";
     private int carga_horaria_total;
     private String co_requisitos;

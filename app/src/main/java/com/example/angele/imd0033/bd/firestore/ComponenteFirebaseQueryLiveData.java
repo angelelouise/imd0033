@@ -70,7 +70,7 @@ public class ComponenteFirebaseQueryLiveData extends LiveData<List<ComponenteCur
                 c.setId_matriz_curricular(document.getLong("id_matriz_curricular").intValue());
                 c.setNome(document.getString("nome"));
                 c.setPre_requisitos(document.getString("pre_requisitos"));
-                c.setSemestre_oferta(document.getLong("semestre__oferta").intValue());
+                c.setSemestre_oferta(document.getLong("semestre_oferta").intValue());
                 componentes.add(c);
             }
            setValue(componentes);
