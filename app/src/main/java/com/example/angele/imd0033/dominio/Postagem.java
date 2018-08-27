@@ -4,6 +4,8 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
 
+import java.io.Serializable;
+
 @Entity(tableName = "postagem", foreignKeys = {
         @ForeignKey(entity = Usuario.class,
             parentColumns = {"id","usuario_nome"},
@@ -12,10 +14,11 @@ import android.arch.persistence.room.PrimaryKey;
                 parentColumns = "id_componente",
                 childColumns = "id_componente_curricular")})
 
-public class Postagem {
+public class Postagem implements Serializable{
     public static final String POSTAGEM = "POSTAGEM_INFO";
+
     @PrimaryKey(autoGenerate = true)
-    private Long id_postagem;
+    private Long id_postagem= Long.valueOf(0);
 
     private Long id_usuario;
 

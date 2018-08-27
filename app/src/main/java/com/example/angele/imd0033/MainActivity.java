@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity
                 startActivityForResult(intent, NOVA_POSTAGEM);
             }
         });
+
         //receber o usuário do login
         Intent receberUsuarioLogin = getIntent();
         usuario = (Usuario) receberUsuarioLogin.getExtras().get(usuario.USUARIO);
@@ -85,14 +86,11 @@ public class MainActivity extends AppCompatActivity
             public void onChanged(@Nullable List<Postagem> post) {
                 //postagemAdapter.setPalavras(post);
                 Log.d("post","post" +post);
+                postagens.clear();
                 postagens.addAll(post);
                 postagemAdapter.notifyDataSetChanged();
             }
         });
-
-
-
-
     }
 
     @Override
@@ -156,10 +154,11 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode  == RESULT_OK && requestCode == NOVA_POSTAGEM){
+        if (resultCode  == RESULT_OK && requestCode == NOVA_POSTAGEM){
 
             Postagem p = new Postagem();
             p = (Postagem) data.getExtras().getSerializable(CadastroPostagemActivity.INFO_EXTRA);
+            //p.setId_postagem((long) 0);
             p.setId_usuario((long) usuario.getId_usuario());
             p.setUsuario(usuario.getNome_pessoa());
             postagemViewModel.inserir(p);

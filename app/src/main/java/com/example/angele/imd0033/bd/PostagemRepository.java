@@ -5,6 +5,7 @@ import android.arch.lifecycle.LiveData;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.example.angele.imd0033.bd.firestore.PostagemDAOFirestore;
 import com.example.angele.imd0033.dominio.Postagem;
@@ -69,13 +70,13 @@ public class PostagemRepository {
     }
 
     public void inserir (Postagem postagem){
-        postagemDAOFirestore.inserir(postagem);
         new InsertASync(postagemDAO).execute(postagem);
+        postagemDAOFirestore.inserir(postagem);
     }
 
     public void atualizar (Postagem postagem){
-        postagemDAOFirestore.atualizar(postagem);
         new InsertASync(postagemDAO).execute(postagem);
+        postagemDAOFirestore.atualizar(postagem);
     }
 
     private class InsertASync extends AsyncTask<Postagem, Void, Void> {
@@ -86,12 +87,19 @@ public class PostagemRepository {
         }
         @Override
         protected Void doInBackground(Postagem... postagens){
-            Postagem p = postagens[0];
-            if(p.getId_postagem() == 0)
-                postagemDAO.inserir(p);
-            else
-                postagemDAO.atualizar(p);
+            try{
+                postagemDAO.inserir(postagens[0]);
+            }catch (Exception e){
+                Log.e(PostagemRepository.class.getName(), "ERRO", e);
+            }
+
             return null;
+            //Postagem p = postagens[0];
+            //if(p.getId_postagem() == 0)
+                //postagemDAO.inserir(p);
+            //else
+                //postagemDAO.atualizar(p);
+            //return null;
         }
     }
     private boolean netOn(){

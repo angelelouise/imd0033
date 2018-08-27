@@ -45,6 +45,7 @@ public class CadastroPostagemActivity extends AppCompatActivity{
                 p.setId_componente_curricular((long) 0);
                 intent.putExtra(INFO_EXTRA, (Serializable) p);
                 setResult(RESULT_OK,intent);
+                finish();
             }
         });
     }

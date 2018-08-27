@@ -22,7 +22,7 @@ public abstract class PostagemBD extends RoomDatabase{
 
     public static PostagemBD getInstance (Context context){
         if(INSTANCE==null){
-            INSTANCE = Room.databaseBuilder(context,PostagemBD.class,"postagem").build();
+            INSTANCE = Room.databaseBuilder(context,PostagemBD.class,"postagem_bd").build();
         }
         return INSTANCE;
     }
