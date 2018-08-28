@@ -28,5 +28,11 @@ public class UsuarioViewModel extends AndroidViewModel {
         return usuarios;
     }
 
+    public Usuario getUsuario() {
+        return usuario;
+    }
 
+    public List<Usuario> getUsuarios() {
+        return usuarios;
+    }
 }

@@ -28,6 +28,7 @@ import com.example.angele.imd0033.bd.UsuarioRepository;
 import com.example.angele.imd0033.bd.firestore.UsuarioDAOFirestore;
 import com.example.angele.imd0033.dominio.Usuario;
 import com.example.angele.imd0033.api.UsuarioService;
+import com.example.angele.imd0033.view.PostagemViewModel;
 import com.example.angele.imd0033.view.UsuarioViewModel;
 
 import retrofit2.Call;
@@ -206,7 +207,10 @@ public class LoginActivity extends AppCompatActivity {
         final String mLogin = login;
         final String mPassword = password;
         Usuario aux = new Usuario();
-        aux = usuarioRepository.findByLogin(mLogin);
+        usuarioViewModel = ViewModelProviders.of(this).get(UsuarioViewModel.class);
+        usuarioViewModel.findByLogin(mLogin);
+        aux= usuarioViewModel.getUsuario();
+        //aux = usuarioRepository.findByLogin(mLogin);
         //aux.setLogin(usuarioRepository.findByLogin(mLogin).getLogin());
         //aux.setSenha(usuarioRepository.findByLogin(mLogin).getSenha());
         /*aux = new Usuario(
@@ -223,8 +227,10 @@ public class LoginActivity extends AppCompatActivity {
                 usuarioRepository.findByLogin(mLogin).getUrl_foto());*/
 
         Log.d(TAG, "aux:" +aux);
+        //só pra testar - comentar depois
         aux.setLogin("admin");
         aux.setSenha("admin");
+        aux.setNome_pessoa("admin");
 
         if(aux.getLogin()!=null){
             showProgress(false);
